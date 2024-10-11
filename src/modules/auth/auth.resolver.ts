@@ -1,10 +1,13 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { User } from '@common/decorators/user.decorator';
+import { comparePassword, hashPassword } from '@common/utils/bcrypt.util';
+import { getEnv } from '@common/utils/env.util';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { AuthService } from './auth.service';
-import { comparePassword, hashPassword } from '@common/utils/bcrypt.util';
-import { JwtService } from '@nestjs/jwt';
-import { getEnv } from '@common/utils/env.util';
+import { AuthGuard } from './guards/AuthGuard';
 
 @Resolver('Auth')
 export class AuthResolver {
@@ -84,5 +87,11 @@ export class AuthResolver {
       ...newUser,
       idToken,
     };
+  }
+
+  @UseGuards(AuthGuard)
+  @Query('fetchUser')
+  async fetchUser(@User() user) {
+    return user;
   }
 }

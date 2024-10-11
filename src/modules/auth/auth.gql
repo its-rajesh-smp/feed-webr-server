@@ -19,5 +19,5 @@ type Mutation {
 
 # queries
 type Query {
-  fetchUser: String
+  fetchUser: User
 }
