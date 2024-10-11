@@ -1,0 +1,23 @@
+# inputs
+input UserInput {
+  email: String!
+  password: String!
+}
+
+# types
+type User {
+  id: String
+  idToken: String
+  email: String
+}
+
+# mutations
+type Mutation {
+  login(userInput: UserInput): User
+  register(userInput: UserInput): User
+}
+
+# queries
+type Query {
+  fetchUser: String
+}
