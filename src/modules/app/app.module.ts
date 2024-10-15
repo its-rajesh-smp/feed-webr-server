@@ -1,3 +1,4 @@
+import { WorkspaceModule } from './../workspace/workspace.module';
 import { getEnv } from '@common/utils/env.util';
 import { PrismaModule } from './../prisma/prisma.module';
 import { AuthModule } from '@modules/auth/auth.module';
@@ -18,6 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
       typePaths: ['./**/*.gql'],
     }),
     AuthModule,
+    WorkspaceModule,
   ],
   controllers: [],
   providers: [],

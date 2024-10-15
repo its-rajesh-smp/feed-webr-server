@@ -1,0 +1,39 @@
+scalar Upload
+
+# inputs
+input CreateWorkspaceInput {
+  name: String
+  title: String
+  customMessage: String
+  questions: [WorkspaceQuestionInput]
+  logoFile: Upload
+  logoUrl: String
+}
+
+input WorkspaceQuestionInput {
+  question: String
+  type: String
+  index: Int
+}
+
+# types
+type Workspace {
+  id: String
+  name: String
+  title: String
+  customMessage: String
+  logoUrl: String
+  questions: [WorkspaceQuestion]
+}
+
+type WorkspaceQuestion {
+  id: String
+  question: String
+  type: String
+  index: Int
+}
+
+# mutations
+type Mutation {
+  createWorkspace(workspaceInput: CreateWorkspaceInput): Workspace
+}
