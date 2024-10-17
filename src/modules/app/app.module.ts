@@ -5,7 +5,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -22,6 +22,5 @@ import { JwtModule } from '@nestjs/jwt';
     WorkspaceModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

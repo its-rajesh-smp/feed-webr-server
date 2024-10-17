@@ -5,7 +5,7 @@ input CreateWorkspaceInput {
   name: String
   title: String
   customMessage: String
-  questions: [WorkspaceQuestionInput]
+  workspaceQuestions: [WorkspaceQuestionInput]
   logoFile: Upload
   logoUrl: String
 }
@@ -23,7 +23,8 @@ type Workspace {
   title: String
   customMessage: String
   logoUrl: String
-  questions: [WorkspaceQuestion]
+  workspaceQuestions: [WorkspaceQuestion]
+  accessUrl: String
 }
 
 type WorkspaceQuestion {
@@ -36,4 +37,9 @@ type WorkspaceQuestion {
 # mutations
 type Mutation {
   createWorkspace(workspaceInput: CreateWorkspaceInput): Workspace
+}
+
+# queries
+type Query {
+  getAllWorkspaces: [Workspace]
 }

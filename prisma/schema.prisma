@@ -7,20 +7,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum QuestionType{
+  SHORT_TEXT
+}
 
 model User {
   id String @default(uuid()) @id
   email String  @unique
   password String
 
-  UserDetails UserDetails[]
+  userDetail UserDetail?
+  workspaces Workspace[]
+  workspaceQuestions WorkspaceQuestion[]
 }
 
-model UserDetails{
+model UserDetail {
   id String @default(uuid()) @id
   name String
   mobileNumber String
 
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Workspace {
+  id String @default(uuid()) @id
+  name String
+  logoUrl String
+  title String
+  customMessage String
+  accessUrl String
+  
   userId String
-  user User? @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  workspaceQuestions WorkspaceQuestion[]
+}
+
+model WorkspaceQuestion {
+  id String @default(uuid()) @id
+  question String
+  type QuestionType
+  index Int
+
+  workspaceId String
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }
