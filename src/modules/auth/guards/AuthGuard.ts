@@ -1,3 +1,4 @@
+import ENV_VARIABLES from '@common/constants/env.const';
 import { getEnv } from '@common/utils/env.util';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
@@ -32,7 +33,7 @@ export class AuthGuard implements CanActivate {
     try {
       // Verify the token
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: getEnv('JWT_SECRET'),
+        secret: getEnv(ENV_VARIABLES.JWT_SECRET),
       });
 
       const user = await this.authService.findOneById(payload.id);

@@ -1,3 +1,4 @@
+import ENV_VARIABLES from '@common/constants/env.const';
 import { v2 as cloudinary } from 'cloudinary';
 import { FileUpload } from 'graphql-upload';
 import { getEnv } from './env.util';
@@ -7,9 +8,9 @@ import { getEnv } from './env.util';
  */
 export const configureCloudinary = () => {
   cloudinary.config({
-    cloud_name: getEnv('CLOUDINARY_CLOUD_NAME'),
-    api_key: getEnv('CLOUDINARY_API_KEY'),
-    api_secret: getEnv('CLOUDINARY_API_SECRET'),
+    cloud_name: getEnv(ENV_VARIABLES.CLOUDINARY_CLOUD_NAME),
+    api_key: getEnv(ENV_VARIABLES.CLOUDINARY_API_KEY),
+    api_secret: getEnv(ENV_VARIABLES.CLOUDINARY_API_SECRET),
     secure: true,
   });
   console.log('Cloudinary Configured');

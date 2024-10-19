@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { getEnv } from './env.util';
+import ENV_VARIABLES from '@common/constants/env.const';
 
 /**
  * Hashes the password using bcrypt
@@ -7,7 +8,7 @@ import { getEnv } from './env.util';
  * @returns Promise<string>
  */
 export const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = getEnv('SALT_ROUNDS');
+  const saltRounds = getEnv(ENV_VARIABLES.SALT_ROUNDS);
   return await bcrypt.hash(password, bcrypt.genSaltSync(+saltRounds));
 };
 
