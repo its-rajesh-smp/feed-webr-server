@@ -14,8 +14,17 @@ export class WorkspaceResolver {
    * Get workspace of a user
    */
   @Query('getAllWorkspaces')
-  async getAllWorkspaces(@User() user) {
-    return await this.workspaceService.findAll();
+  async getAllWorkspaces(@User() user, @Args('name') name) {
+    const condition = {};
+
+    // filter by name
+    if (name) {
+      condition['name'] = {
+        contains: name,
+      };
+    }
+
+    return await this.workspaceService.findAll(condition);
   }
 
   /**
