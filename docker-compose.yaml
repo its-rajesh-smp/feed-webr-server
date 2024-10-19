@@ -8,3 +8,11 @@ services:
     env_file:
       - .env
     entrypoint: ['npm', 'run', 'start:dev']
+
+  website:
+    image: feedwebr-website
+    ports:
+      - 3001:3001
+    env_file:
+      - ../website/.env
+    entrypoint: ['npm', 'run', 'dev']
