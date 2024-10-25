@@ -14,6 +14,8 @@ input WorkspaceQuestionInput {
   question: String
   type: String
   index: Int
+  isMandatory: Boolean
+  isRequired: Boolean
 }
 
 # types
@@ -32,6 +34,8 @@ type WorkspaceQuestion {
   question: String
   type: String
   index: Int
+  isMandatory: Boolean
+  isRequired: Boolean
 }
 
 # mutations

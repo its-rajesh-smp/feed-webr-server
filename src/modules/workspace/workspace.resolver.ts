@@ -53,9 +53,7 @@ export class WorkspaceResolver {
       workspaceQuestions: {
         create: workspaceInput.workspaceQuestions.map(
           (question: IWorkspaceQuestion) => ({
-            question: question.question,
-            type: question.type,
-            index: question.index,
+            ...question,
             userId: user.id,
           }),
         ),

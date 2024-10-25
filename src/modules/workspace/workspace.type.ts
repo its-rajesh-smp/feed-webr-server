@@ -14,4 +14,6 @@ export interface IWorkspaceQuestion {
   question: string;
   type: string;
   index: number;
+  isMandatory: boolean;
+  isRequired: boolean;
 }
