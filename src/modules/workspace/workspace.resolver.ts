@@ -5,6 +5,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { WorkspaceService } from './workspace.service';
 import { IWorkspace, IWorkspaceQuestion } from './workspace.type';
+import { generateDefaultAccessUrl } from '@common/utils/accessUrl.util';
 
 @Resolver('Workspace')
 export class WorkspaceResolver {
@@ -48,7 +49,7 @@ export class WorkspaceResolver {
     const workspace = await this.workspaceService.create({
       ...workspaceInput,
       logoUrl: res.secure_url,
-      accessUrl: `feedwebr/${workspaceInput.title}`,
+      accessUrl: generateDefaultAccessUrl(workspaceInput.name),
       userId: user.id,
       workspaceQuestions: {
         create: workspaceInput.workspaceQuestions.map(

@@ -13,6 +13,13 @@ export class WorkspaceService {
     return await this.prismaService.workspace.findMany({ where: condition });
   }
 
+  async findOne(condition) {
+    return await this.prismaService.workspace.findFirst({
+      where: condition,
+      include: { workspaceQuestions: true },
+    });
+  }
+
   async create(data) {
     return await this.prismaService.workspace.create({ data });
   }

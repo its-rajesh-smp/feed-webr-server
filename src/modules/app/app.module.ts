@@ -1,3 +1,4 @@
+import { ReviewFormModule } from './../review-form/reviewform.module';
 import { WorkspaceModule } from './../workspace/workspace.module';
 import { getEnv } from '@common/utils/env.util';
 import { PrismaModule } from './../prisma/prisma.module';
@@ -9,6 +10,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    ReviewFormModule,
     PrismaModule,
     JwtModule.register({
       global: true,
