@@ -5,7 +5,6 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { WorkspaceService } from './workspace.service';
 import { IWorkspace, IWorkspaceQuestion } from './workspace.type';
-import { generateDefaultAccessUrl } from '@common/utils/accessUrl.util';
 
 @Resolver('Workspace')
 export class WorkspaceResolver {
@@ -14,6 +13,7 @@ export class WorkspaceResolver {
   /**
    * Get workspace of a user
    */
+  @UseGuards(AuthGuard)
   @Query('getAllWorkspaces')
   async getAllWorkspaces(@User() user, @Args('name') name) {
     const condition = {};
@@ -29,6 +29,15 @@ export class WorkspaceResolver {
   }
 
   /**
+   * Get a workspace of a user
+   */
+  @UseGuards(AuthGuard)
+  @Query('getAWorkspace')
+  async getAWorkspace(@User() user, @Args('id') id: string) {
+    return await this.workspaceService.findOneById(id);
+  }
+
+  /**
    * Creates a new workspace
    * @param workspaceInput
    * @returns
@@ -39,8 +48,11 @@ export class WorkspaceResolver {
     @User() user,
     @Args('workspaceInput') workspaceInput: IWorkspace,
   ) {
-    const { file } = await workspaceInput.logoFile;
-    const res = await uploadFile(file);
+    let uploadedLogoResponse = null;
+    if (workspaceInput.logoFile) {
+      const { file } = await workspaceInput.logoFile;
+      uploadedLogoResponse = await uploadFile(file);
+    }
 
     // remove logoFile from workspaceInput
     delete workspaceInput.logoFile;
@@ -48,8 +60,7 @@ export class WorkspaceResolver {
     // create workspace with logoUrl, accessUrl and questions
     const workspace = await this.workspaceService.create({
       ...workspaceInput,
-      logoUrl: res.secure_url,
-      accessUrl: generateDefaultAccessUrl(workspaceInput.name),
+      logoUrl: uploadedLogoResponse?.secure_url,
       userId: user.id,
       workspaceQuestions: {
         create: workspaceInput.workspaceQuestions.map(

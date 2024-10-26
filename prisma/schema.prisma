@@ -37,10 +37,10 @@ model UserDetail {
 model Workspace {
   id String @default(uuid()) @id
   name String
-  logoUrl String
+  logoUrl String?
   title String
   customMessage String
-  accessUrl String
+  accessUrl String @default(uuid()) @unique()
   
   userId String
   user User @relation(fields: [userId], references: [id])
@@ -61,4 +61,5 @@ model WorkspaceQuestion {
   
   userId String
   user User @relation(fields: [userId], references: [id])
+
 }

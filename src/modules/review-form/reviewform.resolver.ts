@@ -7,9 +7,7 @@ export class ReviewFormResolver {
 
   @Query('getReviewForm')
   async getReviewForm(@Args('accessUrl') accessUrl: String) {
-    console.log(accessUrl);
     const workspace = await this.workspaceService.findOne({ accessUrl });
-    console.log(workspace);
     return workspace;
   }
 }

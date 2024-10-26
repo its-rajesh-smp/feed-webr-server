@@ -46,4 +46,5 @@ type Mutation {
 # queries
 type Query {
   getAllWorkspaces(name: String): [Workspace]
+  getAWorkspace(id: String): Workspace
 }
