@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ReviewFormResolver } from './reviewform.resolver';
+import { FeedbackResolver } from './feedback.resolver';
 import { WorkspaceService } from '@modules/workspace/workspace.service';
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [ReviewFormResolver, WorkspaceService],
+  providers: [FeedbackResolver, WorkspaceService],
 })
-export class ReviewFormModule {}
+export class FeedbackModule {}

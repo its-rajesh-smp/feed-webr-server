@@ -1,0 +1,3 @@
+type Query {
+  getFeedbackForm(accessUrl: String): Workspace
+}

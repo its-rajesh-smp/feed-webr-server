@@ -1,12 +1,12 @@
 import { WorkspaceService } from '@modules/workspace/workspace.service';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 
-@Resolver('ReviewForm')
-export class ReviewFormResolver {
+@Resolver('Feedback')
+export class FeedbackResolver {
   constructor(private readonly workspaceService: WorkspaceService) {}
 
-  @Query('getReviewForm')
-  async getReviewForm(@Args('accessUrl') accessUrl: String) {
+  @Query('getFeedbackForm')
+  async getFeedbackForm(@Args('accessUrl') accessUrl: String) {
     const workspace = await this.workspaceService.findOne({ accessUrl });
     return workspace;
   }

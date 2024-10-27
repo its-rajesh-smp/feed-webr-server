@@ -23,6 +23,8 @@ model User {
   userDetail UserDetail?
   workspaces Workspace[]
   workspaceQuestions WorkspaceQuestion[]
+  Feedback Feedback[]
+  QuestionRespons QuestionResponse[]
 }
 
 model UserDetail {
@@ -46,6 +48,7 @@ model Workspace {
   user User @relation(fields: [userId], references: [id])
 
   workspaceQuestions WorkspaceQuestion[]
+  feedbacks Feedback[]
 }
 
 model WorkspaceQuestion {
@@ -62,4 +65,35 @@ model WorkspaceQuestion {
   userId String
   user User @relation(fields: [userId], references: [id])
 
+  QuestionResponse QuestionResponse[]
+}
+
+
+
+model Feedback{
+  id String @default(uuid()) @id
+
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id])
+
+  workspaceId String
+  workspace Workspace @relation(fields: [workspaceId],references: [id])
+
+  QuestionResponse QuestionResponse[]
+}
+
+
+model QuestionResponse{
+  id String @default(uuid()) @id
+
+  answer Json
+  
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id])
+
+  questionId String
+  question WorkspaceQuestion @relation(fields: [questionId],references: [id])
+
+  feedbackId String
+  feedback Feedback @relation(fields: [feedbackId], references: [id])
 }
