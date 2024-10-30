@@ -1,3 +1,5 @@
+import { QuestionType } from '@modules/workspace/workspace.type';
+
 /**
  * Generates feedback question response rows
  * @param questions
@@ -46,23 +48,23 @@ export const generateFeedbackQuestionResponseRows = (
  * @returns
  */
 export const validateAnswersAndParse = (
-  questionType: string,
+  questionType: QuestionType,
   answer: string,
 ) => {
   if (!answer) return null;
   answer = answer.trim();
 
   switch (questionType) {
-    case 'SHORT_TEXT':
+    case QuestionType.SHORT_TEXT:
       return answer;
 
-    case 'NUMBER':
+    case QuestionType.NUMBER:
       if (isNaN(Number(answer))) {
         throw new Error('Answer must be a number');
       }
       return Number(answer);
 
-    case 'EMAIL':
+    case QuestionType.EMAIL:
       const emailRegex =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!emailRegex.test(answer)) {
@@ -70,7 +72,7 @@ export const validateAnswersAndParse = (
       }
       return answer;
 
-    case 'CHECKBOX':
+    case QuestionType.CHECKBOX:
       if (answer !== 'true' && answer !== 'false') {
         throw new Error('Answer must be a boolean');
       }
