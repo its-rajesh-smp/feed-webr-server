@@ -1,3 +1,31 @@
+# inputs
+input SubmitFeedbackFormInput {
+  accessUrl: String
+  questionResponses: [CreateQuestionResponseInput]
+}
+
+input CreateQuestionResponseInput {
+  questionId: String
+  answer: String
+}
+
+# types
+type Feedback {
+  id: String
+  questionResponses: [QuestionResponse]
+}
+
+type QuestionResponse {
+  id: String
+  answer: String
+}
+
+# queries
 type Query {
   getFeedbackForm(accessUrl: String): Workspace
+}
+
+# mutations
+type Mutation {
+  submitFeedbackForm(feedbackInput: SubmitFeedbackFormInput): Boolean
 }

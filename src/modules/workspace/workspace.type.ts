@@ -12,8 +12,16 @@ export interface IWorkspace {
 export interface IWorkspaceQuestion {
   id: string;
   question: string;
-  type: string;
+  type: QuestionType;
   index: number;
   isMandatory: boolean;
   isRequired: boolean;
+}
+
+export enum QuestionType {
+  SHORT_TEXT = 'SHORT_TEXT',
+  NUMBER = 'NUMBER',
+  EMAIL = 'EMAIL',
+  SELECT = 'SELECT',
+  CHECKBOX = 'CHECKBOX',
 }

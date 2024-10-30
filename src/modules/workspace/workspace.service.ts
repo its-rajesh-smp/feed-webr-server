@@ -20,6 +20,13 @@ export class WorkspaceService {
     });
   }
 
+  async findUnique(condition) {
+    return await this.prismaService.workspace.findUnique({
+      where: condition,
+      include: { workspaceQuestions: true },
+    });
+  }
+
   async findOneById(id: string) {
     return await this.prismaService.workspace.findFirst({
       where: { id },

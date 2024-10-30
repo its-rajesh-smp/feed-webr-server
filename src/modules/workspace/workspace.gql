@@ -29,10 +29,18 @@ type Workspace {
   accessUrl: String
 }
 
+enum QuestionType {
+  SHORT_TEXT
+  NUMBER
+  EMAIL
+  SELECT
+  CHECKBOX
+}
+
 type WorkspaceQuestion {
   id: String
   question: String
-  type: String
+  type: QuestionType
   index: Int
   isMandatory: Boolean
   isRequired: Boolean
