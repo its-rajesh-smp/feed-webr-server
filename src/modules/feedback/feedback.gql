@@ -1,7 +1,10 @@
+scalar Upload
+
 # inputs
 input SubmitFeedbackFormInput {
   accessUrl: String
   questionResponses: [CreateQuestionResponseInput]
+  attachments: [Upload]
 }
 
 input CreateQuestionResponseInput {

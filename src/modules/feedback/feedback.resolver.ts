@@ -2,6 +2,7 @@ import { WorkspaceService } from '@modules/workspace/workspace.service';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { generateFeedbackQuestionResponseRows } from './feedback.util';
 import { FeedbackService } from './feedback.service';
+import { uploadMultipleFiles } from '@common/utils/cloudinary.util';
 
 @Resolver('Feedback')
 export class FeedbackResolver {
@@ -19,7 +20,7 @@ export class FeedbackResolver {
   @Mutation('submitFeedbackForm')
   async submitFeedbackForm(@Args('feedbackInput') feedbackInput: any) {
     //  TODO: validate feedbackInput
-    const { accessUrl, questionResponses } = feedbackInput;
+    const { accessUrl, questionResponses, attachments } = feedbackInput;
 
     // find workspace by accessUrl
     const workspace = await this.workspaceService.findUnique({ accessUrl });
@@ -35,6 +36,10 @@ export class FeedbackResolver {
       questionResponses,
       workspace.userId,
     );
+
+    const raw_attachments = await Promise.all(feedbackInput.attachments);
+    const files = raw_attachments.map((file) => file.file);
+    const results = await uploadMultipleFiles(files, 'test');
 
     // create feedback with questionResponses
     const feedback = await this.feedbackService.create({

@@ -25,6 +25,7 @@ export const configureCloudinary = () => {
 export const uploadFile = async (file: FileUpload, folderName?: string) => {
   try {
     if (!file) return;
+    console.log(file);
     const { createReadStream } = file;
 
     const result = await new Promise((resolve, reject) => {
@@ -46,5 +47,25 @@ export const uploadFile = async (file: FileUpload, folderName?: string) => {
     };
   } catch (error) {
     console.error('Upload failed:', error);
+  }
+};
+
+/**
+ * Uploads multiple files to cloudinary
+ * @param files[] Files to be uploaded
+ * @param folderName  Folder name where the files will be uploaded
+ * @returns
+ */
+export const uploadMultipleFiles = async (
+  files: FileUpload[],
+  folderName?: string,
+) => {
+  if (!files || files.length == 0) return;
+  const uploadPromises = files.map((file) => uploadFile(file, folderName));
+  try {
+    const results = await Promise.all(uploadPromises);
+    return results;
+  } catch (error) {
+    console.error('Batch upload failed:', error);
   }
 };
