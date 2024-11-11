@@ -12,20 +12,28 @@ input CreateQuestionResponseInput {
   answer: String
 }
 
+input GetFeedbackResponsesInput {
+  workspaceId: String
+  inboxType: String
+}
+
 # types
 type Feedback {
   id: String
-  questionResponses: [QuestionResponse]
+  QuestionResponse: [QuestionResponse]
+  UserAttachment: [UserAttachment]
 }
 
 type QuestionResponse {
   id: String
   answer: String
+  workspaceQuestions: [WorkspaceQuestion]
 }
 
 # queries
 type Query {
   getFeedbackForm(accessUrl: String): Workspace
+  getFeedbackResponses(getFeedbackInput: GetFeedbackResponsesInput): [Feedback]
 }
 
 # mutations

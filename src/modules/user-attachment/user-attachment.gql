@@ -1,0 +1,4 @@
+type UserAttachment {
+  url: String
+  id: String
+}

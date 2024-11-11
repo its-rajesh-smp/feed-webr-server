@@ -1,11 +1,14 @@
+import { User } from '@common/decorators/user.decorator';
+import { uploadMultipleFiles } from '@common/utils/cloudinary.util';
+import { AuthGuard } from '@modules/auth/guards/AuthGuard';
 import { WorkspaceService } from '@modules/workspace/workspace.service';
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { FeedbackService } from './feedback.service';
 import {
   generateAttachmentRows,
   generateFeedbackQuestionResponseRows,
 } from './feedback.util';
-import { FeedbackService } from './feedback.service';
-import { uploadMultipleFiles } from '@common/utils/cloudinary.util';
 
 @Resolver('Feedback')
 export class FeedbackResolver {
@@ -58,5 +61,47 @@ export class FeedbackResolver {
     });
 
     return true;
+  }
+
+  @UseGuards(AuthGuard)
+  @Query('getFeedbackResponses')
+  async getFeedbackResponses(
+    @User() user,
+    @Args('getFeedbackInput') getFeedbackInput: any,
+  ) {
+    const { workspaceId, inboxType } = getFeedbackInput;
+
+    const workspace = await this.workspaceService.findUnique({
+      id: workspaceId,
+      userId: user.id,
+    });
+
+    if (!workspace) {
+      throw new Error('Workspace not found');
+    }
+
+    let feedbacks = [];
+
+    switch (inboxType) {
+      case 'all':
+        feedbacks = await this.feedbackService.findAll({
+          workspaceId,
+        });
+        break;
+      case 'texts':
+        feedbacks = await this.feedbackService.findAll({
+          workspaceId,
+          UserAttachment: { none: {} },
+        });
+        break;
+      case 'attachments':
+        feedbacks = await this.feedbackService.findAll({
+          workspaceId,
+          UserAttachment: { some: {} },
+        });
+        break;
+    }
+    console.log(feedbacks);
+    return feedbacks;
   }
 }
