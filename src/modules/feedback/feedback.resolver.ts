@@ -1,6 +1,9 @@
 import { WorkspaceService } from '@modules/workspace/workspace.service';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
-import { generateFeedbackQuestionResponseRows } from './feedback.util';
+import {
+  generateAttachmentRows,
+  generateFeedbackQuestionResponseRows,
+} from './feedback.util';
 import { FeedbackService } from './feedback.service';
 import { uploadMultipleFiles } from '@common/utils/cloudinary.util';
 
@@ -20,7 +23,7 @@ export class FeedbackResolver {
   @Mutation('submitFeedbackForm')
   async submitFeedbackForm(@Args('feedbackInput') feedbackInput: any) {
     //  TODO: validate feedbackInput
-    const { accessUrl, questionResponses, attachments } = feedbackInput;
+    const { accessUrl, questionResponses } = feedbackInput;
 
     // find workspace by accessUrl
     const workspace = await this.workspaceService.findUnique({ accessUrl });
@@ -31,7 +34,7 @@ export class FeedbackResolver {
     }
 
     // generate rows to insert
-    const rowsToInsert = generateFeedbackQuestionResponseRows(
+    const questionResponseRowsToInsert = generateFeedbackQuestionResponseRows(
       workspace.workspaceQuestions,
       questionResponses,
       workspace.userId,
@@ -39,13 +42,19 @@ export class FeedbackResolver {
 
     const raw_attachments = await Promise.all(feedbackInput.attachments);
     const files = raw_attachments.map((file) => file.file);
-    const results = await uploadMultipleFiles(files, 'test');
+    const results: any = await uploadMultipleFiles(files, 'test');
+
+    const attachmentRowsToInsert = generateAttachmentRows(
+      results,
+      workspace.userId,
+    );
 
     // create feedback with questionResponses
     const feedback = await this.feedbackService.create({
       workspaceId: workspace.id,
       ownerId: workspace.userId,
-      QuestionResponse: { createMany: { data: rowsToInsert } },
+      QuestionResponse: { createMany: { data: questionResponseRowsToInsert } },
+      UserAttachment: { createMany: { data: attachmentRowsToInsert } },
     });
 
     return true;

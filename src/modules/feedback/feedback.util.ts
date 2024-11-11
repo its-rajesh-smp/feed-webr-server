@@ -79,3 +79,19 @@ export const validateAnswersAndParse = (
       return answer === 'true';
   }
 };
+
+export const generateAttachmentRows = (attachments: [], ownerId: string) => {
+  const rowData = [];
+
+  if (!attachments) return rowData;
+
+  attachments.forEach((attachment: any) => {
+    rowData.push({
+      resourceType: attachment.resource_type,
+      asset_id: attachment.asset_id,
+      url: attachment.secure_url,
+      ownerId,
+    });
+  });
+  return rowData;
+};

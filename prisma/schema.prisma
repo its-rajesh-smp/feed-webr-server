@@ -25,6 +25,7 @@ model User {
   workspaceQuestions WorkspaceQuestion[]
   Feedback Feedback[]
   QuestionRespons QuestionResponse[]
+  UserAttachment UserAttachment[]
 }
 
 model UserDetail {
@@ -33,7 +34,7 @@ model UserDetail {
   mobileNumber String
 
   userId String @unique
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Workspace {
@@ -45,7 +46,7 @@ model Workspace {
   accessUrl String @default(uuid()) @unique()
   
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   workspaceQuestions WorkspaceQuestion[]
   feedbacks Feedback[]
@@ -60,7 +61,7 @@ model WorkspaceQuestion {
   isRequired Boolean @default(false)
 
   workspaceId String
-  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id],onDelete: Cascade)
   
   userId String
   user User @relation(fields: [userId], references: [id])
@@ -74,12 +75,13 @@ model Feedback{
   id String @default(uuid()) @id
 
   ownerId String
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id],onDelete: Cascade)
 
   workspaceId String
-  workspace Workspace @relation(fields: [workspaceId],references: [id])
+  workspace Workspace @relation(fields: [workspaceId],references: [id],onDelete: Cascade)
 
   QuestionResponse QuestionResponse[]
+  UserAttachment UserAttachment[]
 }
 
 
@@ -89,11 +91,25 @@ model QuestionResponse{
   answer Json
   
   ownerId String
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id],onDelete: Cascade)
 
   questionId String
-  question WorkspaceQuestion @relation(fields: [questionId],references: [id])
+  question WorkspaceQuestion @relation(fields: [questionId],references: [id],onDelete: Cascade)
 
   feedbackId String
-  feedback Feedback @relation(fields: [feedbackId], references: [id])
+  feedback Feedback @relation(fields: [feedbackId], references: [id],onDelete: Cascade)
+}
+
+
+model UserAttachment{
+  id String @default(uuid()) @id
+  resourceType String @default("other")
+  url String
+  asset_id String @unique
+
+  feedbackId String
+  feedback Feedback @relation(fields: [feedbackId],references: [id],onDelete: Cascade)
+
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id],onDelete: Cascade)
 }

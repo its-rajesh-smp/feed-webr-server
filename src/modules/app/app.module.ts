@@ -1,12 +1,13 @@
-import { FeedbackModule } from '../feedback/feedback.module';
-import { WorkspaceModule } from './../workspace/workspace.module';
 import { getEnv } from '@common/utils/env.util';
-import { PrismaModule } from './../prisma/prisma.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { UserAttachmentModule } from '@modules/user-attachment/user-attachment.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
+import { FeedbackModule } from '../feedback/feedback.module';
+import { PrismaModule } from './../prisma/prisma.module';
+import { WorkspaceModule } from './../workspace/workspace.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     }),
     AuthModule,
     WorkspaceModule,
+    UserAttachmentModule,
   ],
   controllers: [],
 })
